@@ -4,9 +4,12 @@
 #include <stdlib.h>
 #include <time.h>
 
-void draw(std::vector<int> &hand)
+void draw(std::vector<int> &hand, int amount)
 {
-	hand.push_back(rand() % 13 + 1);
+	for (int i = 0; i < amount; i++)
+	{
+		hand.push_back(rand() % 13 + 1);
+	}
 }
 
 bool checkInt(std::string input)
@@ -19,25 +22,28 @@ bool checkInt(std::string input)
 	return true;
 }
 
-std::string cardType(int card)
+std::string whatHave(std::vector<int> hand)
 {
-	switch (card)
+	for (int card : hand)
 	{
-	case 1:
-		return "Ace";
-		break;
-	case 11:
-		return "Jack";
-		break;
-	case 12:
-		return "Queen";
-		break;
-	case 13:
-		return "King";
-		break;
-	default:
-		return std::to_string(card);
-		break;
+		switch (card)
+		{
+		case 1:
+			return " You have an Ace";
+			break;
+		case 11:
+			return "You have a Jack";
+			break;
+		case 12:
+			return "You have a Queen";
+			break;
+		case 13:
+			return "You have a King";
+			break;
+		default:
+			return std::to_string(card);
+			break;
+		}
 	}
 }
 
@@ -61,14 +67,11 @@ int main()
 	// draw
 	std::vector<int> hand;
 
-	for (int i = 0; i < 200; i++)
-	{
-		draw(hand);
-	}
+	draw(hand, 2);
 
 	for (int i : hand)
 	{
-		std::cout << i << std::endl;
+		std::cout << cardType(i) << std::endl;
 	}
 	
 
