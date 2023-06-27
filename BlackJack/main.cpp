@@ -69,6 +69,7 @@ int main()
 
 	draw(hand, 2);
 
+
 	whatHave(hand);
 	
 
