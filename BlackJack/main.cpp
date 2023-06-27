@@ -4,11 +4,47 @@
 #include <stdlib.h>
 #include <time.h>
 
+bool isBust(std::vector<int> &hand)
+{
+	int aces = 0;
+	int total = 0;
+	for (int i : hand)
+	{
+		if (i == 12 || i == 13 || i == 14)
+		{
+			total += 10;
+		}
+		else if (i == 11)
+		{
+			total += 11;
+			aces++;
+		}
+		else
+		{
+			total += i;
+		}
+	}
+	if (total < 22)
+		return false;
+
+	if (aces > 0)
+	{
+		for (int i = 0; i < hand.size(); i++)
+		{
+			if (hand.at(i) == 11)
+			{
+				hand.at(i) = 1;
+				break;
+			} 
+		}
+	}
+}
+
 void draw(std::vector<int> &hand, int amount)
 {
 	for (int i = 0; i < amount; i++)
 	{
-		hand.push_back(rand() % 13 + 1);
+		hand.push_back(rand() % 13 + 2);
 	}
 }
 
@@ -24,27 +60,33 @@ bool checkInt(std::string input)
 
 std::string whatHave(std::vector<int> hand)
 {
+	std::string cards = "";
+
 	for (int card : hand)
 	{
 		switch (card)
 		{
 		case 1:
-			return " You have an Ace";
+			cards.append("You have an Ace, ");
 			break;
 		case 11:
-			return "You have a Jack";
+			cards.append("You have an Ace, ");
 			break;
 		case 12:
-			return "You have a Queen";
+			cards.append("You have a Jack, ");
 			break;
 		case 13:
-			return "You have a King";
+			cards.append("You have a Queen, ");
+			break;
+		case 14:
+			cards.append("You have a King, ");
 			break;
 		default:
-			return std::to_string(card);
+			cards.append("You have a " + std::to_string(card) + ", ");
 			break;
 		}
 	}
+	return cards;
 }
 
 int main()
@@ -68,12 +110,29 @@ int main()
 	std::vector<int> hand;
 
 	draw(hand, 2);
+	std::cout << whatHave(hand) << std::endl;
 
+	// moves player
+	while (true)
+	{
+		draw(hand, 1);
+		
+		std::string answer;
+		std::cout << "Would you like to draw a card? y/n" << std::endl;
+		std::cin >> answer;
 
-	whatHave(hand);
-	
+		if (answer == "y")
+		{
+			draw(hand, 1);
+			std::cout << whatHave(hand) << std::endl;
+		}
+		else if (answer == "n")
+		{
+			break;
+		}
+	}
 
-	// moves
+	// moves dealer
 
 	// results
 }
