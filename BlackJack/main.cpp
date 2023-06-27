@@ -69,10 +69,7 @@ int main()
 
 	draw(hand, 2);
 
-	for (int i : hand)
-	{
-		std::cout << cardType(i) << std::endl;
-	}
+	whatHave(hand);
 	
 
 	// moves
