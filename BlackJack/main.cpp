@@ -76,38 +76,52 @@ bool checkInt(std::string input)
 	return true;
 }
 
-std::string whatHave(std::vector<int> hand, bool amount)
+void whatHave(std::vector<int> hand, int amount)
 {
-	std::string cards = "";
+	int timesRun = 0;
+	if (amount == 0 || amount > hand.size() || amount < 0)
+		amount = hand.size();
 
 	for (int card : hand)
 	{
+
 		switch (card)
 		{
 		case 1:
-			cards.append("You have an Ace, ");
+			std::cout << "Ace";
 			break;
 		case 11:
-			cards.append("You have an Ace, ");
+			std::cout << "Ace";
 			break;
 		case 12:
-			cards.append("You have a Jack, ");
+			std::cout << "Jack";
 			break;
 		case 13:
-			cards.append("You have a Queen, ");
+			std::cout << "Queen";
 			break;
 		case 14:
-			cards.append("You have a King, ");
+			std::cout << "King";
 			break;
 		default:
-			cards.append("You have a " + std::to_string(card) + ", ");
+			std::cout << card;
 			break;
 		}
-	}
+		timesRun++;
 
-	if (!amount)
-		return cards.begin();
-	return cards;
+		if (timesRun == (amount - 1))
+		{
+			std::cout << " and ";
+		}
+		else if (timesRun == amount)
+		{
+			std::cout << "." << std::endl;
+			break;
+		}
+		else
+		{
+			std::cout << ", ";
+		}
+	}
 }
 
 int main()
@@ -139,8 +153,8 @@ int main()
 	draw(dHand, 2);
 
 	// What does dealer have
-
-	std::cout << whatHave(hand, true) << std::endl;
+	std::cout << "Dealer has:" << std::endl;
+	whatHave(dHand, 1);
 
 	// moves player
 	while (true)
@@ -151,7 +165,9 @@ int main()
 			std::cout << "Bust!" << std::endl;
 			break;
 		}
-		std::cout << handTotal(hand) << std::endl;
+
+		std::cout << "You have: " << std::endl;
+		whatHave(hand, 0);
 		 
 		std::string answer;
 		std::cout << "Would you like to draw a card? y/n" << std::endl;
@@ -160,7 +176,6 @@ int main()
 		if (answer == "y")
 		{
 			draw(hand, 1);
-			std::cout << whatHave(hand, false) << std::endl;
 		}
 		else if (answer == "n")
 		{
