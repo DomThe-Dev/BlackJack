@@ -4,6 +4,21 @@
 #include <stdlib.h>
 #include <time.h>
 
+int handTotal(std::vector<int> hand)
+{
+	int total = 0;
+	for (int i : hand)
+	{
+		if (i != 12 && i != 13 && i != 14)
+		{
+			total += i;
+			continue;
+		}
+		total += 10;
+	}
+	return total;
+}
+
 bool isBust(std::vector<int> &hand)
 {
 	int aces = 0;
@@ -24,6 +39,7 @@ bool isBust(std::vector<int> &hand)
 			total += i;
 		}
 	}
+
 	if (total < 22)
 		return false;
 
@@ -39,6 +55,7 @@ bool isBust(std::vector<int> &hand)
 			break;
 		} 
 	}
+	return true;
 }
 
 void draw(std::vector<int> &hand, int amount)
@@ -59,7 +76,7 @@ bool checkInt(std::string input)
 	return true;
 }
 
-std::string whatHave(std::vector<int> hand)
+std::string whatHave(std::vector<int> hand, bool amount)
 {
 	std::string cards = "";
 
@@ -87,6 +104,9 @@ std::string whatHave(std::vector<int> hand)
 			break;
 		}
 	}
+
+	if (!amount)
+		return cards.begin();
 	return cards;
 }
 
@@ -94,8 +114,15 @@ int main()
 {
 	std::srand(time(0));
 
-	// bet
+	// Variables created
+	std::vector<int> hand;
+	std::vector<int> dHand;
+
 	int money = 250;
+
+	// Betting
+	// Need to make this prompt string dissapear afterwards. Currently
+	// it's just floating there for the rest of the game.
 	std::string prompt;
 	while (true)
 	{
@@ -107,21 +134,25 @@ int main()
 	int bet = std::stoi(prompt);
 	money -= bet;
 
-	// draw
-	std::vector<int> hand;
-
+	// Draw cards
 	draw(hand, 2);
-	std::cout << whatHave(hand) << std::endl;
+	draw(dHand, 2);
+
+	// What does dealer have
+
+	std::cout << whatHave(hand, true) << std::endl;
 
 	// moves player
 	while (true)
 	{
+		// No code before this. This line fixes the aces to ones or 11s.
 		if (isBust(hand))
 		{
 			std::cout << "Bust!" << std::endl;
 			break;
 		}
-
+		std::cout << handTotal(hand) << std::endl;
+		 
 		std::string answer;
 		std::cout << "Would you like to draw a card? y/n" << std::endl;
 		std::cin >> answer;
@@ -129,7 +160,7 @@ int main()
 		if (answer == "y")
 		{
 			draw(hand, 1);
-			std::cout << whatHave(hand) << std::endl;
+			std::cout << whatHave(hand, false) << std::endl;
 		}
 		else if (answer == "n")
 		{
