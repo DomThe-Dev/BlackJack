@@ -27,16 +27,17 @@ bool isBust(std::vector<int> &hand)
 	if (total < 22)
 		return false;
 
-	if (aces > 0)
+	if (aces == 0)
+		return true;
+
+	for (int i = 0; i < hand.size(); i++)
 	{
-		for (int i = 0; i < hand.size(); i++)
+		if (hand.at(i) == 11)
 		{
-			if (hand.at(i) == 11)
-			{
-				hand.at(i) = 1;
-				break;
-			} 
-		}
+			hand.at(i) = 1;
+			return isBust(hand);
+			break;
+		} 
 	}
 }
 
@@ -115,8 +116,12 @@ int main()
 	// moves player
 	while (true)
 	{
-		draw(hand, 1);
-		
+		if (isBust(hand))
+		{
+			std::cout << "Bust!" << std::endl;
+			break;
+		}
+
 		std::string answer;
 		std::cout << "Would you like to draw a card? y/n" << std::endl;
 		std::cin >> answer;
