@@ -4,6 +4,27 @@
 #include <stdlib.h>
 #include <time.h>
 
+void result(int res, int bet, int &money)
+{
+	if (res == 1)
+	{
+		std::cout << "You win!" << std::endl;
+		money += (bet * 2);
+		std::cout << "You now have: " << money << " credits." << std::endl;
+	}
+	else if (res == 2)
+	{
+		std::cout << "You lose!" << std::endl;
+		std::cout << "You now have: " << money << " credits." << std::endl;
+	}
+	else if (res == 3)
+	{
+		std::cout << "You draw!" << std::endl;
+		money += bet;
+		std::cout << "You have: " << money << " credits." << std::endl;
+	}
+} 
+
 int handTotal(std::vector<int> hand)
 {
 	int total = 0;
@@ -76,15 +97,39 @@ bool checkInt(std::string input)
 	return true;
 }
 
-void whatHave(std::vector<int> hand, int amount)
+void whatHave(std::vector<int> hand, int which)
 {
+	if (!(which < 0) || !(which >= hand.size()))
+	{
+		switch (hand.at(which))
+		{
+		case 1:
+			std::cout << "Ace";
+			break;
+		case 11:
+			std::cout << "Ace";
+			break;
+		case 12:
+			std::cout << "Jack";
+			break;
+		case 13:
+			std::cout << "Queen";
+			break;
+		case 14:
+			std::cout << "King";
+			break;
+		default:
+			std::cout << hand.at(which);
+			break;
+		}
+		std::cout << "." << std::endl;
+		return;
+	} 
+
 	int timesRun = 0;
-	if (amount == 0 || amount > hand.size() || amount < 0)
-		amount = hand.size();
 
 	for (int card : hand)
 	{
-
 		switch (card)
 		{
 		case 1:
@@ -108,11 +153,11 @@ void whatHave(std::vector<int> hand, int amount)
 		}
 		timesRun++;
 
-		if (timesRun == (amount - 1))
+		if (timesRun == (hand.size() - 1))
 		{
 			std::cout << " and ";
 		}
-		else if (timesRun == amount)
+		else if (timesRun == hand.size())
 		{
 			std::cout << "." << std::endl;
 			break;
@@ -124,67 +169,97 @@ void whatHave(std::vector<int> hand, int amount)
 	}
 }
 
+int money = 250;
+
 int main()
 {
-	std::srand(time(0));
-
-	// Variables created
-	std::vector<int> hand;
-	std::vector<int> dHand;
-
-	int money = 250;
-
-	// Betting
-	// Need to make this prompt string dissapear afterwards. Currently
-	// it's just floating there for the rest of the game.
-	std::string prompt;
 	while (true)
 	{
-		std::cout << "Please input a number!" << std::endl;
-		std::cin >> prompt;
-		if (checkInt(prompt))
-			break;
-	}
-	int bet = std::stoi(prompt);
-	money -= bet;
+		std::srand(time(0));
 
-	// Draw cards
-	draw(hand, 2);
-	draw(dHand, 2);
+		// Variables created
+		std::vector<int> hand;
+		std::vector<int> dHand;
 
-	// What does dealer have
-	std::cout << "Dealer has:" << std::endl;
-	whatHave(dHand, 1);
-
-	// moves player
-	while (true)
-	{
-		std::cout << "You have: " << std::endl;
-		whatHave(hand, 0);
-
-		// No code before this. This line fixes the aces to ones or 11s.
-		if (isBust(hand))
+		// Betting
+		// Need to make this prompt string dissapear afterwards. Currently
+		// it's just floating there for the rest of the game.
+		std::string prompt;
+		while (true)
 		{
-			std::cout << "Bust!" << std::endl;
-			break;
+			std::cout << "Please input a number!" << std::endl;
+			std::cin >> prompt;
+			if (checkInt(prompt))
+				break;
 		}
-		 
-		std::string answer;
-		std::cout << "Would you like to draw a card? y/n" << std::endl;
-		std::cin >> answer;
+		int bet = std::stoi(prompt);
+		money -= bet;
 
-		if (answer == "y")
+		// Draw cards
+		draw(hand, 2);
+		draw(dHand, 2);
+
+		// What does dealer have
+		std::cout << "Dealer has:" << std::endl;
+		whatHave(dHand, 0);
+
+		// moves player
+		while (true)
 		{
-			draw(hand, 1);
-			std::cout << "You drew: " << hand.at(hand.size() - 1) << "." << std::endl;
+			std::cout << "\nYou have: " << std::endl;
+			whatHave(hand, -1);
+
+			// No code before this. This line fixes the aces to ones or 11s.
+			if (isBust(hand))
+			{
+				std::cout << "Bust!" << std::endl;
+				break;
+			}
+
+			std::string answer;
+			std::cout << "Would you like to draw a card? y/n" << std::endl;
+			std::cin >> answer;
+
+			if (answer == "y")
+			{
+				draw(hand, 1);
+				std::cout << "You drew: " << std::endl;
+				whatHave(hand, hand.size() - 1);
+			}
+			else if (answer == "n")
+			{
+				break;
+			}
 		}
-		else if (answer == "n")
+
+		// moves dealer
+
+		while (!isBust(dHand) && !isBust(hand))
 		{
-			break;
+			std::cout << "\nDealer has:" << std::endl;
+			whatHave(dHand, -1);
+
+			if (handTotal(dHand) >= handTotal(hand) || handTotal(dHand) > 17)
+				break;
+
+			draw(dHand, 1);
+			std::cout << "Dealer drew: " << std::endl;
+			whatHave(dHand, dHand.size() - 1);
 		}
-	}
 
-	// moves dealer
-
-	// results
+		if (isBust(dHand) || handTotal(hand) > handTotal(dHand) && !isBust(hand))
+		{
+			result(1, bet, money);
+		}
+		else if (isBust(hand) || handTotal(dHand) > handTotal(hand) )
+		{
+			result(2, bet, money);
+		}
+		else if (handTotal(dHand) == handTotal(hand))
+		{
+			result(3, bet, money);
+		}
+		std::cout << std::endl;
+		// results
+	} 
 }
