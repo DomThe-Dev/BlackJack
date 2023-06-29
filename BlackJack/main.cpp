@@ -159,15 +159,15 @@ int main()
 	// moves player
 	while (true)
 	{
+		std::cout << "You have: " << std::endl;
+		whatHave(hand, 0);
+
 		// No code before this. This line fixes the aces to ones or 11s.
 		if (isBust(hand))
 		{
 			std::cout << "Bust!" << std::endl;
 			break;
 		}
-
-		std::cout << "You have: " << std::endl;
-		whatHave(hand, 0);
 		 
 		std::string answer;
 		std::cout << "Would you like to draw a card? y/n" << std::endl;
@@ -176,6 +176,7 @@ int main()
 		if (answer == "y")
 		{
 			draw(hand, 1);
+			std::cout << "You drew: " << hand.at(hand.size() - 1) << "." << std::endl;
 		}
 		else if (answer == "n")
 		{
