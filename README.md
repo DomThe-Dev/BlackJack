@@ -6,6 +6,7 @@ If you want to see the code, it is all displayed here. If you want an explanatio
 Any issues should be submitted to the issues tab, and formatted in a similar way to #1.
 
 ### Who Are You?
+https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%2Fpin%2F73957618858133083%2F&psig=AOvVaw3LPP2CdzQt0FzwwPcDGukk&ust=1708209582475000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCMC-v9z2sIQDFQAAAAAdAAAAABAE
 There are some who call me.. Dom.. but I go by many names. Whatever it is that you choose to call me, I am an aspiring Game Developer, who loves programming, games, stories, and plenty of other things. If you want to learn more about me, look at my GitHub profile, and you'll see some extra information about me, as well as links to my other public socials.
 
 ### Why BlackJack?
