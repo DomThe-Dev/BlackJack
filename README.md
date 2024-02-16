@@ -7,6 +7,7 @@ Any issues should be submitted to the issues tab, and formatted in a similar way
 
 ### Who Are You?
 ![tim-theen-chanter-monty](https://github.com/DomThe-Dev/BlackJack/assets/122572944/6615b4b6-e39a-4480-9e7d-4e1c253596b6)
+
 There are some who call me.. Dom.. but I go by many names. Whatever it is that you choose to call me, I am an aspiring Game Developer, who loves programming, games, stories, and plenty of other things. If you want to learn more about me, look at my GitHub profile, and you'll see some extra information about me, as well as links to my other public socials.
 
 ### Why BlackJack?
