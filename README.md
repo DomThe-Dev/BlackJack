@@ -3,7 +3,7 @@ This is a project worked on by yours truly, in C++. It serves as a way to show m
 
 ### Documentation
 If you want to see the code, it is all displayed here. If you want an explanation of my process, and how my code is structured, look at this [repository's wiki](https://github.com/DomThe-Dev/BlackJack/wiki), where I intend to document the process, and other information.
-Any issues should be submitted to the issues tab, and formatted in a similar way to 
+Any issues should be submitted to the issues tab, and formatted in a similar way to [IssueExample](https://github.com/DomThe-Dev/BlackJack/issues/1).
 
 ### Who Are You?
 There are some who call me.. Dom.. but I go by many names. Whatever it is that you choose to call me, I am an aspiring Game Developer, who loves programming, games, stories, and plenty of other things. If you want to learn more about me, look at my GitHub profile, and you'll see some extra information about me, as well as links to my other public socials.
