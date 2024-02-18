@@ -6,12 +6,36 @@ The previous GitHub repository has been deleted, due to it being made when I kne
 meaning that the file structure and such was an absolute mess. Nonetheless, the code from there will be 
 copied over here, in the hopes of showing off the very first version of my BlackJack game.
 */
+#include <iostream>
+#include "playerDefinition.h"
 
+int main()
+{
+	Player player;
+	player.handTemp = 5;
+}
+
+
+
+
+
+
+
+
+
+
+
+/*
 #include <iostream>
 #include <sstream>
 #include <vector>
 #include <stdlib.h>
 #include <time.h>
+
+class Player
+{
+
+};
 
 void result(int res, int bet, int& money)
 {
@@ -272,3 +296,5 @@ int main()
 		// results
 	}
 }
+
+*/
