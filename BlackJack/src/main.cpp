@@ -7,18 +7,11 @@ meaning that the file structure and such was an absolute mess. Nonetheless, the 
 copied over here, in the hopes of showing off the very first version of my BlackJack game.
 */
 #include <iostream>
-#include "playerDefinition.h"
 
 int main()
 {
-	Player player;
-	player.handTemp = 5;
+	return 0;
 }
-
-
-
-
-
 
 
 
