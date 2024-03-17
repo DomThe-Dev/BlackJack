@@ -17,46 +17,46 @@ class User
 private:
 
 public:
-	std::vector<int> hand;
+	std::vector<short> hand;
+	// First number is the total, the tels the program where to continue counting
+	short total = 0;
+	// Acts as a flag to tellt he program if the user has aces, but the data stored are 
+	// location of the aces in the hand vectors. When this is empty, the flag is down.
+	std::vector<short> aces;
 	bool bust = false;
 
-	void isBust()
+	void draw(short amount)
 	{
-		int ace[2] = {0, 0};
-		int total = 0;
-		for (int i = 0; i < hand.size(); i++)
-		{
-			if (hand[i] > 11)
-			{
-				total += 10;
-				continue;
-			}
-			if (hand[i] == 11 && !ace[0])
-			{
-				ace[0] = 1;
-				ace[1] = i;
-			}
-			total += hand[i];
-		}
-		if (total > 21)
-		{
-			if (!ace[0])
-			{
-				bust = true;
-			}
-			else
-			{
-				hand[ace[1]] = 1;
-				isBust();
-			}
-		}
-	}
-
-	void draw(int amount)
-	{
-		for (int i = 0; i < amount; i++)
+		for (short i = 0; i < amount && !bust; i++)
 		{
 			hand.push_back(rand() % 13 + 2);
+			if (hand.back() > 11)
+				total += 10;
+			if (hand.back() == 11)
+				aces.push_back(hand.size() - 1);
+			if (hand.back() <= 11)
+				total += hand.back();
+
+			if (total < 22)
+				continue;
+			// Following code is if you are over 21 total
+
+			// If no aces, you are bust.
+			if (aces.empty())
+			{
+				bust = true;
+				return;
+			}
+			// You have some aces, so change the first ace in hand to a 1 from an 11, 
+			// and finally remove the ace location from the list, and deduct 10 from the total.
+			hand[aces[0]] = 1;
+			aces.erase(aces.begin());
+			total -= 10;
+			if (total > 22)
+			{
+				bust = true;
+				return;
+			}
 		}
 	}
 };
@@ -71,11 +71,9 @@ int main()
 
 	std::srand(time(0));
 	User player;
-	player.hand.push_back(11);
-	player.hand.push_back(14);
-	player.hand.push_back(14);
-	player.hand.push_back(14);
-	player.isBust();
+	player.draw(10);
+	for (short i : player.hand)
+		std::cout << i << std::endl;
 
 	// Main Menu
 
