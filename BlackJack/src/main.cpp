@@ -7,9 +7,91 @@ meaning that the file structure and such was an absolute mess. Nonetheless, the 
 copied over here, in the hopes of showing off the very first version of my BlackJack game.
 */
 #include <iostream>
+#include <sstream>
+#include <time.h>
+#include <vector>
+
+
+class User
+{
+private:
+
+public:
+	std::vector<int> hand;
+	bool bust = false;
+
+	void isBust()
+	{
+		int ace[2] = {0, 0};
+		int total = 0;
+		for (int i = 0; i < hand.size(); i++)
+		{
+			if (hand[i] > 11)
+			{
+				total += 10;
+				continue;
+			}
+			if (hand[i] == 11 && !ace[0])
+			{
+				ace[0] = 1;
+				ace[1] = i;
+			}
+			total += hand[i];
+		}
+		if (total > 21)
+		{
+			if (!ace[0])
+			{
+				bust = true;
+			}
+			else
+			{
+				hand[ace[1]] = 1;
+				isBust();
+			}
+		}
+	}
+
+	void draw(int amount)
+	{
+		for (int i = 0; i < amount; i++)
+		{
+			hand.push_back(rand() % 13 + 2);
+		}
+	}
+};
 
 int main()
 {
+	// The game has 4 phases:
+	//	Main Menu - Menu, buttons, stats, etc.
+	//	Pre-Game - Bet money, draw cards
+	//	Main Game - Game loop of drawing and standing
+	//	Post Game - Comparison, dealer drawing, result
+
+	std::srand(time(0));
+	User player;
+	player.hand.push_back(11);
+	player.hand.push_back(14);
+	player.hand.push_back(14);
+	player.hand.push_back(14);
+	player.isBust();
+
+	// Main Menu
+
+
+	// Pre-Game
+
+
+
+	// Main Game
+
+
+
+	// Post Game
+
+
+
 	return 0;
 }
 
@@ -49,60 +131,6 @@ void result(int res, int bet, int& money)
 		money += bet;
 		std::cout << "You have: " << money << " credits." << std::endl;
 	}
-}
-
-int handTotal(std::vector<int> hand)
-{
-	int total = 0;
-	for (int i : hand)
-	{
-		if (i != 12 && i != 13 && i != 14)
-		{
-			total += i;
-			continue;
-		}
-		total += 10;
-	}
-	return total;
-}
-
-bool isBust(std::vector<int>& hand)
-{
-	int aces = 0;
-	int total = 0;
-	for (int i : hand)
-	{
-		if (i == 12 || i == 13 || i == 14)
-		{
-			total += 10;
-		}
-		else if (i == 11)
-		{
-			total += 11;
-			aces++;
-		}
-		else
-		{
-			total += i;
-		}
-	}
-
-	if (total < 22)
-		return false;
-
-	if (aces == 0)
-		return true;
-
-	for (int i = 0; i < hand.size(); i++)
-	{
-		if (hand.at(i) == 11)
-		{
-			hand.at(i) = 1;
-			return isBust(hand);
-			break;
-		}
-	}
-	return true;
 }
 
 void draw(std::vector<int>& hand, int amount)
