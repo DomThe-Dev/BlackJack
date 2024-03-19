@@ -10,55 +10,78 @@ copied over here, in the hopes of showing off the very first version of my Black
 #include <sstream>
 #include <time.h>
 #include <vector>
+#include <numeric>
+
+class Card
+{
+public:
+	Card()
+	{
+		switch (int i = rand() % 13 + 2)
+		{
+		case 11:
+			value = 11;
+			rank = "Ace";
+			break;
+		case 12:
+			value = 10;
+			rank = "Jack";
+			break;
+		case 13:
+			value = 10;
+			rank = "Queen";
+			break;
+		case 14:
+			value = 10;
+			rank = "King";
+			break;
+		default:
+			value = i;
+			rank = std::to_string(i);
+		}
+	}
+private:
+
+public:
+	short value;
+	std::string suit;
+	std::string rank;
+};
 
 
 class User
 {
 private:
-
-public:
-	std::vector<short> hand;
-	// First number is the total, the tels the program where to continue counting
-	short total = 0;
-	// Acts as a flag to tellt he program if the user has aces, but the data stored are 
-	// location of the aces in the hand vectors. When this is empty, the flag is down.
-	std::vector<short> aces;
+	std::vector<Card> hand;
 	bool bust = false;
 
-	void draw(short amount)
+public:
+	void drawCard(short amount)
 	{
-		for (short i = 0; i < amount && !bust; i++)
+		for (short i = 0; i < amount; i++)
 		{
-			hand.push_back(rand() % 13 + 2);
-			if (hand.back() > 11)
-				total += 10;
-			if (hand.back() == 11)
-				aces.push_back(hand.size() - 1);
-			if (hand.back() <= 11)
-				total += hand.back();
-
-			if (total < 22)
-				continue;
-			// Following code is if you are over 21 total
-
-			// If no aces, you are bust.
-			if (aces.empty())
-			{
-				bust = true;
-				return;
-			}
-			// You have some aces, so change the first ace in hand to a 1 from an 11, 
-			// and finally remove the ace location from the list, and deduct 10 from the total.
-			hand[aces[0]] = 1;
-			aces.erase(aces.begin());
-			total -= 10;
-			if (total > 22)
-			{
-				bust = true;
-				return;
-			}
 		}
 	}
+
+	bool isBust()
+	{
+		/*
+		int sumOfHand = std::accumulate(hand.begin(), hand.end(), 0);
+
+		if (sumOfHand < 21)
+			return false;
+
+		int numOfAces = std::count(hand.begin(), hand.end(), 11);
+		*/
+		return false;
+	}
+	std::string displayCards()
+	{
+		std::string cards;
+
+		return cards;
+	}
+	
 };
 
 int main()
@@ -70,10 +93,13 @@ int main()
 	//	Post Game - Comparison, dealer drawing, result
 
 	std::srand(time(0));
-	User player;
-	player.draw(10);
-	for (short i : player.hand)
-		std::cout << i << std::endl;
+
+	for (int i = 0; i < 100; i++)
+	{
+		Card card;
+		std::cout << card.value << ", ";
+		std::cout << card.rank << std::endl;
+	}
 
 	// Main Menu
 
