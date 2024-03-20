@@ -17,28 +17,48 @@ class Card
 public:
 	Card()
 	{
-		switch (int i = rand() % 13 + 2)
-		{
-		case 11:
-			value = 11;
-			rank = "Ace";
-			break;
-		case 12:
-			value = 10;
-			rank = "Jack";
-			break;
-		case 13:
-			value = 10;
-			rank = "Queen";
-			break;
-		case 14:
-			value = 10;
-			rank = "King";
-			break;
-		default:
+		// Rank and Value
+		short i = rand() % 13 + 2;
+
+		if (i <= 11)
 			value = i;
-			rank = std::to_string(i);
+		else if (i > 11)
+			value = 10;
+
+		if (i == 11)
+			rank = 'A';
+		else if (i == 12)
+			rank = 'J';
+		else if (i == 13)
+			rank = 'Q';
+		else if (i == 14)
+			rank = 'K';
+		else
+			rank = std::to_string(value);
+		
+		if (i == 10)
+		{
+			cardDisplay.replace(13, 2, rank);
+			cardDisplay.replace(92, 2, rank);
 		}
+		else
+		{
+			cardDisplay.replace(13, 1, rank);
+			cardDisplay.replace(93, 1, rank);
+		}
+		
+		// Suit
+		i = rand() % 4 + 1;
+		if (i == 1)
+			suit = '\3';
+		if (i == 2)
+			suit = '\4';
+		if (i == 3)
+			suit = '\5';
+		if (i == 4)
+			suit = '\6';
+
+		cardDisplay.replace(53, 1, suit);
 	}
 private:
 
@@ -46,33 +66,38 @@ public:
 	short value;
 	std::string suit;
 	std::string rank;
+
+	std::string cardDisplay =
+		"+---------+\n"
+		"|1........|\n"
+		"|.........|\n"
+		"|.........|\n"
+		"|....2....|\n"
+		"|.........|\n"
+		"|.........|\n"
+		"|........3|\n"
+		"+---------+\n";
 };
 
 
 class User
 {
 private:
-	std::vector<Card> hand;
 	bool bust = false;
 
 public:
+	std::vector<Card> hand;
 	void drawCard(short amount)
 	{
 		for (short i = 0; i < amount; i++)
 		{
+			Card card;
+			hand.push_back(card);
 		}
 	}
 
 	bool isBust()
 	{
-		/*
-		int sumOfHand = std::accumulate(hand.begin(), hand.end(), 0);
-
-		if (sumOfHand < 21)
-			return false;
-
-		int numOfAces = std::count(hand.begin(), hand.end(), 11);
-		*/
 		return false;
 	}
 	std::string displayCards()
@@ -93,12 +118,15 @@ int main()
 	//	Post Game - Comparison, dealer drawing, result
 
 	std::srand(time(0));
+	User player;
 
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < 15; i++)
 	{
-		Card card;
-		std::cout << card.value << ", ";
-		std::cout << card.rank << std::endl;
+		player.drawCard(1);
+	}
+	for (auto i : player.hand)
+	{
+		std::cout << i.cardDisplay << std::endl;
 	}
 
 	// Main Menu
