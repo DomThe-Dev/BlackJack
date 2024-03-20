@@ -17,14 +17,21 @@ class Card
 public:
 	Card()
 	{
-		// Rank and Value
+		// === Rank and Value ===
+		// Ge a random number between 2 and 14, including 2 and 14.
+		// Don't need 1, as ace is usually 11, unless person has gone bust.
 		short i = rand() % 13 + 2;
 
+		// Value is almost the same as the card, but the 11 from an ace can change
+		// to a 1, and Jacks, Queens, and Kings all equal 10. For this reason, 
+		// if the random number is equal to or less than 11, the value is 11. Otherwise, it's 10.
 		if (i <= 11)
 			value = i;
 		else if (i > 11)
 			value = 10;
 
+		// Rank is the thing that is displayed, while value is what is used
+		// Rank will show if card is an Ace, Jack, Queen or King.
 		if (i == 11)
 			rank = 'A';
 		else if (i == 12)
@@ -36,18 +43,22 @@ public:
 		else
 			rank = std::to_string(value);
 		
+		// When trying to display the rank in the card, a 10 screws up the art, as it's 2 characters
+		// rather than the usual 1. This code replaces the replacement characters in the display art
+		// with the card's rank
 		if (i == 10)
 		{
-			cardDisplay.replace(13, 2, rank);
-			cardDisplay.replace(92, 2, rank);
+			cardDisplay.replace(cardDisplay.find('#'), 2, rank);
+			cardDisplay.replace(cardDisplay.find('@') - 1, 2, rank);
 		}
 		else
 		{
-			cardDisplay.replace(13, 1, rank);
-			cardDisplay.replace(93, 1, rank);
+			cardDisplay.replace(cardDisplay.find('#'), 1, rank);
+			cardDisplay.replace(cardDisplay.find('@'), 1, rank);
 		}
 		
-		// Suit
+		// This code reuses the i and generates a number between 1 and 4.
+		// Depending on the number, a different suit is generated.
 		i = rand() % 4 + 1;
 		if (i == 1)
 			suit = '\3';
@@ -57,8 +68,9 @@ public:
 			suit = '\5';
 		if (i == 4)
 			suit = '\6';
-
-		cardDisplay.replace(53, 1, suit);
+		
+		// The suit replaces the ! in the card display string.
+		cardDisplay.replace(cardDisplay.find('!'), 1, suit);
 	}
 private:
 
@@ -66,19 +78,18 @@ public:
 	short value;
 	std::string suit;
 	std::string rank;
-
+	bool hidden = false;
 	std::string cardDisplay =
 		"+---------+\n"
-		"|1........|\n"
+		"|#........|\n"
 		"|.........|\n"
 		"|.........|\n"
-		"|....2....|\n"
+		"|....!....|\n"
 		"|.........|\n"
 		"|.........|\n"
-		"|........3|\n"
+		"|........@|\n"
 		"+---------+\n";
 };
-
 
 class User
 {
