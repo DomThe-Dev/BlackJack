@@ -148,7 +148,7 @@ public:
 		if (hand.size() <= 0)
 			return "There are no cards in hand. ";
 
-		// Goes through every card. Increments of 3
+		// Goes through every card. Increments of 3. Awful
 		for (int i = 0; i < hand.size(); i += 3)
 		{
 			for (int j = 0; j < hand[0].newLines; j++)
