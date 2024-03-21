@@ -32,7 +32,9 @@ public:
 
 		// Rank is the thing that is displayed, while value is what is used
 		// Rank will show if card is an Ace, Jack, Queen or King.
-		if (i == 11)
+		if (i < 11)
+			rank = std::to_string(value);
+		else if (i == 11)
 			rank = 'A';
 		else if (i == 12)
 			rank = 'J';
@@ -40,55 +42,75 @@ public:
 			rank = 'Q';
 		else if (i == 14)
 			rank = 'K';
-		else
-			rank = std::to_string(value);
-		
-		// When trying to display the rank in the card, a 10 screws up the art, as it's 2 characters
-		// rather than the usual 1. This code replaces the replacement characters in the display art
-		// with the card's rank
-		if (i == 10)
-		{
-			cardDisplay.replace(cardDisplay.find('#'), 2, rank);
-			cardDisplay.replace(cardDisplay.find('@') - 1, 2, rank);
-		}
-		else
-		{
-			cardDisplay.replace(cardDisplay.find('#'), 1, rank);
-			cardDisplay.replace(cardDisplay.find('@'), 1, rank);
-		}
 		
 		// This code reuses the i and generates a number between 1 and 4.
 		// Depending on the number, a different suit is generated.
 		i = rand() % 4 + 1;
 		if (i == 1)
 			suit = '\3';
-		if (i == 2)
+		else if (i == 2)
 			suit = '\4';
-		if (i == 3)
+		else if (i == 3)
 			suit = '\5';
-		if (i == 4)
+		else if (i == 4)
 			suit = '\6';
-		
-		// The suit replaces the ! in the card display string.
-		cardDisplay.replace(cardDisplay.find('!'), 1, suit);
+
+		for (char i : cardDisplay)
+		{
+			if (i == '*')
+				newLines++;
+		}
 	}
 private:
-
+	std::string cardDisplay =
+		"+---------+*"
+		"|$........|*"
+		"|.........|*"
+		"|.........|*"
+		"|....!....|*"
+		"|.........|*"
+		"|.........|*"
+		"|........@|*"
+		"+---------+*";
 public:
 	short value;
 	std::string suit;
 	std::string rank;
 	bool hidden = false;
-	std::string cardDisplay =
-		"+---------+\n"
-		"|#........|\n"
-		"|.........|\n"
-		"|.........|\n"
-		"|....!....|\n"
-		"|.........|\n"
-		"|.........|\n"
-		"|........@|\n"
-		"+---------+\n";
+	int newLines = 0;
+
+	std::string displayCard()
+	{
+		// When trying to display the rank in the card, a 10 screws up the art, as it's 2 characters
+		// rather than the usual 1. This code replaces the replacement characters in the display art
+		// with the card's rank
+		if (hidden)
+		{
+			for (int i = 0; i < cardDisplay.length() - 1; i++)
+			{
+				if (cardDisplay[i] == '.' || cardDisplay[i] == '@' || cardDisplay[i] == '$' || cardDisplay[i] == '!')
+					cardDisplay[i] = '#';
+			}
+		}
+		else
+		{
+			// Could change the cardDisplay to have 2 $ rather than $ and @ by making the program
+			// detect where the symbols are. If over halfway point, then do the if 10 code
+			if (rank.length() == 2)
+			{
+				cardDisplay.replace(cardDisplay.find('$'), 2, rank);
+				cardDisplay.replace(cardDisplay.find('@') - 1, 2, rank);
+			}
+			else
+			{
+				cardDisplay.replace(cardDisplay.find('$'), 1, rank);
+				cardDisplay.replace(cardDisplay.find('@'), 1, rank);
+			}
+			// The suit replaces the ! in the card display string.
+			cardDisplay.replace(cardDisplay.find('!'), 1, suit);
+		}
+		return cardDisplay;
+	}
 };
 
 class User
@@ -113,9 +135,33 @@ public:
 	}
 	std::string displayCards()
 	{
-		std::string cards;
+		std::string cardList;
+		
+		/*
+		How to display the 3 cards
 
-		return cards;
+		First, check if there are any cards. If not, break.
+		if there are more than 0 cards, start reading through the first line. 
+		When the * is reached, check for next card. if there is another card, do the thing again.
+		When 3 are done, new line, and move onto the next lines of code.
+		*/
+		if (hand.size() <= 0)
+			return "There are no cards in hand. ";
+
+		// Goes through every card. Increments of 3
+		for (int i = 0; i < hand.size(); i += 3)
+		{
+			for (int j = 0; j < hand[0].newLines; j++)
+			{
+				for (char k : hand[i].displayCard())
+				{
+					if (k == '*')
+						break;
+				}
+			}
+		}
+
+		return cardList;
 	}
 	
 };
@@ -131,14 +177,8 @@ int main()
 	std::srand(time(0));
 	User player;
 
-	for (int i = 0; i < 15; i++)
-	{
-		player.drawCard(1);
-	}
-	for (auto i : player.hand)
-	{
-		std::cout << i.cardDisplay << std::endl;
-	}
+	
+	std::cout << std::endl;
 
 	// Main Menu
 
